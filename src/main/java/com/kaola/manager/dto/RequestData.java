@@ -39,7 +39,12 @@ public class RequestData {
     private Double rareMoney;
     private int userId;
     private int score;
-
+    /**
+     * 订单业务
+     */
+    private int orderId;
+    private String orderDate;
+    private String orderType;
 
 
 }
