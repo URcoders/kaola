@@ -30,5 +30,16 @@ public class RequestData {
      */
     private int sitId;
     private Double money;
+    /**
+     * user业务
+     */
+    private String name;
+    private String sex;
+    private String tel;
+    private Double rareMoney;
+    private int userId;
+    private int score;
+
+
 
 }
