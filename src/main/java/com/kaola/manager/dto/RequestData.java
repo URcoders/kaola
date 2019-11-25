@@ -45,6 +45,10 @@ public class RequestData {
     private int orderId;
     private String orderDate;
     private String orderType;
+    /**
+     * 开门
+     */
+    private int preTime;
 
 
 }

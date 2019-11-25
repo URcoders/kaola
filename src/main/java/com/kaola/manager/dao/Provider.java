@@ -1,6 +1,5 @@
 package com.kaola.manager.dao;
 
-import com.kaola.manager.model.Store;
 import org.apache.ibatis.annotations.Param;
 
 /**

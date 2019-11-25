@@ -1,5 +1,6 @@
 package com.kaola.manager;
 
+import com.kaola.manager.util.DateUtil;
 import com.kaola.manager.util.DigestUtil;
 import org.junit.jupiter.api.Test;
 
@@ -12,5 +13,9 @@ public class UtilTest {
     @Test
     public void testDigest(){
         System.out.println(DigestUtil.digest("123456",2));
+    }
+    @Test
+    public void testDate(){
+        System.out.println(DateUtil.getY_M_D());
     }
 }
