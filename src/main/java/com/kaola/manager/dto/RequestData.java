@@ -49,6 +49,15 @@ public class RequestData {
      * 开门
      */
     private int preTime;
+    /**
+     * 套餐模块
+     */
+    private int mealId;
+    private double mealMoney;
+    private String mealType;
+    private String mealDesc;
+    private int mealDays;
+    private String mealName;
 
 
 }

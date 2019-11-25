@@ -1,5 +1,6 @@
 package com.kaola.manager.dto;
 
+import com.kaola.manager.model.Meal;
 import com.kaola.manager.model.User;
 
 /**
@@ -22,5 +23,16 @@ public class WrapperFactory {
         user.setSex(requestData.getSex());
         user.setUserId(requestData.getUserId());
         return user;
+    }
+
+    public static Meal buildMeal(RequestData requestData) {
+        Meal meal = new Meal();
+        meal.setMealDays(requestData.getMealDays());
+        meal.setMealDesc(requestData.getMealDesc());
+        meal.setMealId(requestData.getMealId());
+        meal.setMealName(requestData.getMealName());
+        meal.setMealType(requestData.getMealType());
+        meal.setMealMoney(requestData.getMealMoney());
+        return meal;
     }
 }
