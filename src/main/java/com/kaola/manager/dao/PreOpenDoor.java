@@ -2,6 +2,7 @@ package com.kaola.manager.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 /**
@@ -13,4 +14,7 @@ import org.apache.ibatis.annotations.Update;
 public interface PreOpenDoor {
     @Update("UPDATE pre_open_door SET pre_time =#{time}")
     void updatePreOpenDoorTime(@Param("time")int time);
+
+    @Select("SELECT pre_time FROM pre_open_door limit 1")
+    int queryCurTime();
 }

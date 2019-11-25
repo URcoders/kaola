@@ -9,10 +9,7 @@ import com.kaola.manager.model.Administractor;
 import com.kaola.manager.service.AdminService;
 import com.kaola.manager.util.VerifyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author linxu
@@ -50,6 +47,15 @@ public class PreController {
             responseData.setStatus(Status.FAIL.getStatus());
             responseData.setMsg(Message.HAVE_NO_RIGHT.getContent());
         }
+        return responseData;
+    }
+
+    @GetMapping("/getPreTime")
+    public ResponseData getOpenDoorTime() {
+        ResponseData responseData = new ResponseData();
+        responseData.setData(openDoor.queryCurTime());
+        responseData.setStatus(Status.OK.getStatus());
+        responseData.setMsg(Message.OP_OK.getContent());
         return responseData;
     }
 }

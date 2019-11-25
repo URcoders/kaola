@@ -22,6 +22,8 @@ public class Order {
     private String roomId;
     //用于跨表查询店名
     private String storeName;
+    private String name;
+    private String tel;
 
     public static enum OrderType {
         /**

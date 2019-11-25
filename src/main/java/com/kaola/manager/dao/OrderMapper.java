@@ -26,7 +26,9 @@ public interface OrderMapper {
                     @Result(property = "sitId", column = "sit_id"),
                     @Result(property = "roomId", column = "room_id"),
                     @Result(property = "storeId", column = "store_id"),
-                    @Result(property = "storeName", column = "store_name")
+                    @Result(property = "storeName", column = "store_name"),
+                    @Result(property = "name", column = "name"),
+                    @Result(property = "tel", column = "tel")
             })
     @SelectProvider(value = Provider.class,method = "selectOrder")
     List<Order> queryOrderByType(@Param("orderType") String orderType, @Param("orderDate") String orderDate);
