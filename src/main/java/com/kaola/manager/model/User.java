@@ -16,4 +16,8 @@ public class User {
     private String url;
     private Double rareMoney;
     private int score;
+
+    private String birth;
+    private String target;
+    private String job;
 }

@@ -20,7 +20,10 @@ public interface UserMapper {
             @Result(property = "sex,", column = "sex,"),
             @Result(property = "tel", column = "tel"),
             @Result(property = "rareMoney", column = "rare_money"),
-            @Result(property = "score", column = "score")
+            @Result(property = "score", column = "score"),
+            @Result(property = "birth", column = "birth"),
+            @Result(property = "job", column = "job"),
+            @Result(property = "target", column = "target")
     })
     List<User> queryAllUserNotInBlackList();
 
@@ -37,7 +40,10 @@ public interface UserMapper {
             @Result(property = "sex,", column = "sex,"),
             @Result(property = "tel", column = "tel"),
             @Result(property = "rareMoney", column = "rare_money"),
-            @Result(property = "score", column = "score")
+            @Result(property = "score", column = "score"),
+            @Result(property = "birth", column = "birth"),
+            @Result(property = "job", column = "job"),
+            @Result(property = "target", column = "target")
     })
     List<User> queryUserByName(@Param("name") String name);
 
@@ -55,7 +61,10 @@ public interface UserMapper {
             @Result(property = "sex,", column = "sex,"),
             @Result(property = "tel", column = "tel"),
             @Result(property = "rareMoney", column = "rare_money"),
-            @Result(property = "score", column = "score")
+            @Result(property = "score", column = "score"),
+            @Result(property = "birth", column = "birth"),
+            @Result(property = "job", column = "job"),
+            @Result(property = "target", column = "target")
     })
     List<User> queryAllUserInBlackList();
 
