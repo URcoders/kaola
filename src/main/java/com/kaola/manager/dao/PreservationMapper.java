@@ -31,6 +31,10 @@ public interface PreservationMapper {
     )
     List<Preservation> queryPreservationRecords(@Param("preservationTime") String date);
 
+    /**
+     * 删除预约记录
+     * @param pid 
+     */
     @Delete("DELETE FROM preservation WHERE preservation_id=#{pid}")
     void deletePreservationRecord(@Param("pid") int pid);
 }

@@ -16,6 +16,10 @@ public class UserAndMeal {
      */
     private String name;
     /**
+     * 用户电话号码
+     */
+    private String tel;
+    /**
      * 使用次数
      */
     private int usedTimes;
@@ -23,4 +27,8 @@ public class UserAndMeal {
      * 剩余天数
      */
     private int rareDays;
+    /**
+     *
+     */
+    private String status;
 }

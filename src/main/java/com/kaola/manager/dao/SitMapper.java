@@ -57,4 +57,6 @@ public interface SitMapper {
 
     @Insert("INSERT INTO sits (sit_id,room_id,store_id,sit_date,money,preserved,room_type,cur_date) VALUES(#{s.sitId},#{s.roomId},#{s.storeId},#{s.sitDate},#{s.money},#{s.preserved},#{s.roomType},#{s.curDate})")
     void addSit(@Param("s") Sit sit);
+
+
 }

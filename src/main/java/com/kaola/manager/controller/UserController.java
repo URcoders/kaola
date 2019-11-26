@@ -1,10 +1,17 @@
 package com.kaola.manager.controller;
 
+import com.kaola.manager.constances.Message;
+import com.kaola.manager.constances.Status;
+import com.kaola.manager.dao.TopUpRecordMapper;
 import com.kaola.manager.dto.RequestData;
 import com.kaola.manager.dto.ResponseData;
+import com.kaola.manager.model.TopUpRecord;
 import com.kaola.manager.service.UserManagerService;
+import com.kaola.manager.util.VerifyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author linxu
@@ -16,7 +23,8 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserManagerService userManagerService;
-
+    @Autowired
+    private TopUpRecordMapper mapper;
     @GetMapping("/listAllUser")
     public ResponseData listAllUsers(@RequestParam("tokens") String tokens) {
         return userManagerService.listAllUserNotInBlackList(tokens);
@@ -55,6 +63,26 @@ public class UserController {
     @PostMapping("/removeUserFromBlackList")
     public ResponseData removeUserFromBlackList(@RequestBody RequestData requestData) {
         return userManagerService.moveUserFromBlackList(requestData);
+    }
+
+    @GetMapping("/listUserMoneyById")
+    public ResponseData queryUserRecord(@RequestParam("tokens") String tokens,@RequestParam("userId") int userId){
+        ResponseData<List<TopUpRecord>> responseData=new ResponseData<>();
+        if (VerifyUtil.haveRight(tokens)){
+            try {
+                responseData.setData(mapper.queryRecordByUserId(userId));
+                responseData.setMsg(Message.OP_OK.getContent());
+                responseData.setStatus(Status.OK.getStatus());
+            } catch (Exception e) {
+                e.printStackTrace();
+                responseData.setMsg(Message.SERVER_ERROR.getContent());
+                responseData.setStatus(Status.FAIL.getStatus());
+            }
+        }else {
+            responseData.setStatus(Status.FAIL.getStatus());
+            responseData.setMsg(Message.HAVE_NO_RIGHT.getContent());
+        }
+        return responseData;
     }
 
 

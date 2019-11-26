@@ -16,4 +16,6 @@ public interface MealManagerService {
     ResponseData listAllMeal(RequestData requestData);
 
     ResponseData modifyMealInfo(RequestData requestData);
+
+    ResponseData listUserAndMealCase(String tokens, int mealId);
 }

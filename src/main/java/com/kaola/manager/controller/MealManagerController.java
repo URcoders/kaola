@@ -3,6 +3,7 @@ package com.kaola.manager.controller;
 import com.kaola.manager.dto.RequestData;
 import com.kaola.manager.dto.ResponseData;
 import com.kaola.manager.service.MealManagerService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +37,10 @@ public class MealManagerController {
     @PostMapping("/modifyMeal")
     ResponseData modifyMeal(@RequestBody RequestData requestData) {
         return mealManagerService.modifyMealInfo(requestData);
+    }
+
+    @GetMapping("/listUserCase")
+    ResponseData listUserCase(@RequestParam("tokens") String tokens, @RequestParam("mealId") int mealId) {
+        return mealManagerService.listUserAndMealCase(tokens,mealId);
     }
 }
