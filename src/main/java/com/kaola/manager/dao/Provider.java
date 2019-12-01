@@ -26,4 +26,13 @@ public class Provider {
         }
         return stringBuilder.toString();
     }
+
+    public String selectAllRefound(@Param("date") String date) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("SELECT *FROM refund");
+        if (date != null && !date.equals("")) {
+            stringBuilder.append("WHERE refund_date  LIKE  #{date} \"%\"");
+        }
+        return stringBuilder.toString();
+    }
 }

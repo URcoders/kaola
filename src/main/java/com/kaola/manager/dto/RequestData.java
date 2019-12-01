@@ -58,6 +58,11 @@ public class RequestData {
     private String mealDesc;
     private int mealDays;
     private String mealName;
+    /**
+     * 退款
+     */
+    private int reId;
+    private String status;
 
 
 }

@@ -24,6 +24,7 @@ public class Order {
     private String storeName;
     private String name;
     private String tel;
+    private int preservationId;
 
     public static enum OrderType {
         /**

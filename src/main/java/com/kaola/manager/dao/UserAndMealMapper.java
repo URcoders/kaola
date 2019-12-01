@@ -16,11 +16,14 @@ public interface UserAndMealMapper {
     @Select("SELECT user_meal.*,user.name,user.tel  FROM user_meal   LEFT JOIN user ON user_meal.user_id=user.user_id  WHERE meal_id=#{id} ")
     @Results(value =
             {
-                    @Result(property = "name",column = "name"),
-                    @Result(property = "tel",column = "tel"),
-                    @Result(property = "usedTimes",column = "used_times"),
-                    @Result(property = "rareDays",column = "rare_days"),
-                    @Result(property = "status",column = "status"),
+                    @Result(property = "name", column = "name"),
+                    @Result(property = "tel", column = "tel"),
+                    @Result(property = "usedTimes", column = "used_times"),
+                    @Result(property = "rareDays", column = "rare_days"),
+                    @Result(property = "status", column = "status"),
             })
     List<UserAndMeal> queryUserAndMealByMealId(@Param("id") int mealId);
+
+    @Delete("DELETE FROM user_meal WHERE order_id=#{orderId}")
+    void deleteUserAndMeal(@Param("orderId") int orderId);
 }

@@ -67,6 +67,19 @@ public interface UserMapper {
             @Result(property = "target", column = "target")
     })
     List<User> queryAllUserInBlackList();
+    @Select("SELECT *FROM user WHERE user_id =#{uid}")
+    @Results(value = {
+            @Result(property = "userId", column = "user_id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "sex,", column = "sex,"),
+            @Result(property = "tel", column = "tel"),
+            @Result(property = "rareMoney", column = "rare_money"),
+            @Result(property = "score", column = "score"),
+            @Result(property = "birth", column = "birth"),
+            @Result(property = "job", column = "job"),
+            @Result(property = "target", column = "target")
+    })
+    User queryUserById(@Param("uid")int uid);
 
     @Insert("DELETE FROM blacklist WHERE id=#{userId}")
     void removeFromBlackList(@Param("userId") int userId);

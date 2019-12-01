@@ -53,10 +53,12 @@ public interface SitMapper {
      * @param roomType
      */
     @Update("UPDATE sits SET money=#{money} WHERE sit_id=#{sitId} AND room_id=#{roomId} AND store_id=#{storeId} AND room_type=#{roomType} ")
-    void updateSit(@Param("money")Double money,@Param("sitId") int sitId, @Param("roomId") String roomId, @Param("storeId") int storeId, @Param("roomType") String roomType);
+    void updateSit(@Param("money") Double money, @Param("sitId") int sitId, @Param("roomId") String roomId, @Param("storeId") int storeId, @Param("roomType") String roomType);
 
     @Insert("INSERT INTO sits (sit_id,room_id,store_id,sit_date,money,preserved,room_type,cur_date) VALUES(#{s.sitId},#{s.roomId},#{s.storeId},#{s.sitDate},#{s.money},#{s.preserved},#{s.roomType},#{s.curDate})")
     void addSit(@Param("s") Sit sit);
 
+    @Update("UPDATE sits SET preserved = 0 WHERE room_id=#{roomId} AND sit_id=#{sitId} AND store_id=#{storeId} AND sit_date=#{sitDate} AND cur_date=#{curDate}")
+    void updateSitStatus(@Param("sitId") int sitId, @Param("roomId") String roomId, @Param("storeId") int storeId, @Param("sitDate") String sitDate, @Param("curDate") String curDate);
 
 }
