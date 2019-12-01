@@ -132,4 +132,20 @@ public class StoreManagerServiceImpl implements StoreManagerService {
             return store.getStoreName() != null && store.getStoreId() != 0;
         }
     }
+
+    @Override
+    public ResponseData queryStoreByStoreId(int storeId) {
+        ResponseData<Store> responseData = new ResponseData<>();
+        try {
+            Store store = storeMapper.queryStoreById(storeId);
+            responseData.setStatus(Status.OK.getStatus());
+            responseData.setMsg(Message.OP_OK.getContent());
+            responseData.setData(store);
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseData.setStatus(Status.SERVER_ERROR.getStatus());
+            responseData.setMsg(Message.SERVER_ERROR.getContent());
+        }
+        return responseData;
+    }
 }

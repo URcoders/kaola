@@ -23,4 +23,7 @@ public interface StoreManagerService {
     ResponseData deleteStore(String tokens, int id);
 
     ResponseData modifyStore(Store s);
+
+    ResponseData queryStoreByStoreId(int storeId);
+
 }

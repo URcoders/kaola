@@ -38,4 +38,9 @@ public class StoreManageController {
     public ResponseData modifyStore(@RequestBody Store store) {
         return storeManagerService.modifyStore(store);
     }
+
+    @GetMapping("/queryStoreByStoreId")
+    public ResponseData queryStoreByStoreId(@RequestParam("tokens") String tokens, @RequestParam("storeId") int storeId) {
+        return storeManagerService.queryStoreByStoreId(storeId);
+    }
 }
