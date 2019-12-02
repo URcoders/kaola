@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -98,6 +99,8 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
             //判断是怎么处理退款，拒绝
             if (Refound.Status.REJECTED.reject().equals(status.trim())) {
                 refoundMapper.updateRefound(status, rid);
+                responseData.setStatus(Status.OK.getStatus());
+                responseData.setMsg(Message.OP_OK.getContent());
             } else if (Refound.Status.ACCEPTED.accept().equals(status.trim())) {
                 // 同意请求：分类：充值订单、预约订单、套餐订单进行对应的处理
                 log.info("查询退款信息：" + rid);
@@ -113,18 +116,25 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
                         refoundManagerService.processTopup(order.getUserId(), order.getOrderMoney(), order);
                         //更改退款状态
                         refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(),rid);
+                        responseData.setStatus(Status.OK.getStatus());
+                        responseData.setMsg(Message.OP_OK.getContent());
                     } catch (Exception e) {
-                        throw new RuntimeException("处理充值订单失败，事务回滚。");
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                        responseData.setMsg("处理充值订单退款出现异常，原因可能是用户余额不足回扣.");
+                        responseData.setStatus(Status.FAIL.getStatus());
                     }
                 } else if (order.getOrderType().trim().equals(Order.OrderType.MEAL_TYPE.type())) {
                     //处理套餐购买订单
                     try {
                         refoundManagerService.processMeal(order); //更改退款状态
                         refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(),rid);
-
+                        responseData.setStatus(Status.OK.getStatus());
+                        responseData.setMsg(Message.OP_OK.getContent());
                     } catch (Exception e) {
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                         log.error("处理套餐订单退款出现异常，事务回滚.");
-                        throw new RuntimeException("处理套餐订单退款出现异常，事务回滚");
+                        responseData.setMsg("处理套餐退款信息出现异常.");
+                        responseData.setStatus(Status.FAIL.getStatus());
                     }
                 } else if (order.getOrderType().trim().equals(Order.OrderType.PRESERVATION_TYPE.type())) {
                     //处理预约订单
@@ -134,14 +144,16 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
                         refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(),rid);
                         //TODO 删除预约记录
                         preservationMapper.deletePreservationRecord(order.getPreservationId());
+                        responseData.setStatus(Status.OK.getStatus());
+                        responseData.setMsg(Message.OP_OK.getContent());
                     } catch (Exception e) {
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                         log.error("处理预约订单退款出现异常，事务回滚.");
-                        throw new RuntimeException("处理预约订单退款出现异常，事务回滚");
+                        responseData.setMsg("处理预约订单退款出现异常.");
+                        responseData.setStatus(Status.FAIL.getStatus());
                     }
                 }
             }
-            responseData.setStatus(Status.OK.getStatus());
-            responseData.setMsg(Message.OP_OK.getContent());
         } else {
             responseData.setStatus(Status.FAIL.getStatus());
             responseData.setMsg(Message.HAVE_NO_RIGHT.getContent());
@@ -161,6 +173,8 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
             if (rareMoney - topUpMoney >= 0.001d) {
                 user.setRareMoney(rareMoney - topUpMoney);
                 userMapper.updateUserInfo(user);
+            }else {
+                throw new Exception("余额不足回扣.");
             }
             //TODO 订单状态修改
             order.setOrderStatus("同意退款");
@@ -173,11 +187,16 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void processMeal(Order order) throws Exception {
-        //删除套餐记录
-        userAndMealMapper.deleteUserAndMeal(order.getOrderId());
-        //TODO 订单状态修改
-        order.setOrderStatus("同意退款");
-        orderMapper.updateOrderStatus(order);
+        try {
+            //删除套餐记录
+            userAndMealMapper.deleteUserAndMeal(order.getOrderId());
+            //TODO 订单状态修改
+            order.setOrderStatus("同意退款");
+            orderMapper.updateOrderStatus(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new Exception("处理套餐信息出现异常.");
+        }
     }
 
     /**
@@ -185,12 +204,17 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
      */
     @Transactional(propagation = Propagation.REQUIRED)
     public void processPreservation(Order order) throws Exception {
-        //查询预约记录
-        Preservation preservation = preservationMapper.queryPreservationById(order.getPreservationId());
-        sitMapper.updateSitStatus(preservation.getSitId(), preservation.getRoomId(), order.getStoreId(), preservation.getPreservationDate().split(" ")[1], preservation.getPreservationDate().split(" ")[0]);
-        //修改订单状态
-        //TODO 订单状态修改
-        order.setOrderStatus("同意退款");
-        orderMapper.updateOrderStatus(order);
+        try {
+            //查询预约记录
+            Preservation preservation = preservationMapper.queryPreservationById(order.getPreservationId());
+            sitMapper.updateSitStatus(preservation.getSitId(), preservation.getRoomId(), order.getStoreId(), preservation.getPreservationDate().split(" ")[1], preservation.getPreservationDate().split(" ")[0]);
+            //修改订单状态
+            //TODO 订单状态修改
+            order.setOrderStatus("同意退款");
+            orderMapper.updateOrderStatus(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("处理预约退款信息出现异常.");
+        }
     }
 }
