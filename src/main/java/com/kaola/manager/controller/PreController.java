@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/admin/user")
+@CrossOrigin(origins = {"*"})
 public class PreController {
     @Autowired
     private AdminService adminService;

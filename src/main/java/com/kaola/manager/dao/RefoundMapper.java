@@ -26,7 +26,7 @@ public interface RefoundMapper {
                     @Result(property = "status", column = "status")
             }
     )
-    List<Refound> queryAllRefound(@Param("date") String date);
+    List<Refound> queryAllRefound(@Param("fdate") String date);
 
     @Update("UPDATE refund SET status=#{status} WHERE re_id=#{rid}")
     void updateRefound(@Param("status") String status, @Param("rid") int rid);

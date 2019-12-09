@@ -16,6 +16,10 @@ public class UtilTest {
     }
     @Test
     public void testDate(){
-        System.out.println(DateUtil.getY_M_D());
+        //System.out.println(DateUtil.getY_M_D());
+        for (String d:DateUtil.getY_M_DList()
+             ) {
+            System.out.println(d);
+        }
     }
 }

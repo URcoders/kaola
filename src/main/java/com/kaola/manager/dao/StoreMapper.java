@@ -50,7 +50,7 @@ public interface StoreMapper {
     @Update("UPDATE store SET store_name=#{s.storeName},store_address=#{s.storeAddress},store_status=#{s.storeStatus} WHERE store_id=#{s.storeId}")
     void modifyStore(@Param("s") Store store);
 
-    @Select("SELECT * store WHERE store_id=#{sid}")
+    @Select("SELECT * FROM store WHERE store_id=#{sid}")
     @Results(value =
             {
                     @Result(property = "storeId", column = "store_id"),

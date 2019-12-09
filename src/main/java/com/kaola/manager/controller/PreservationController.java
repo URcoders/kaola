@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/admin/preserve")
+@CrossOrigin(origins = {"*"})
 public class PreservationController {
     @Autowired
     private PreservationManagerService preservationManagerService;

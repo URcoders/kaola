@@ -4,10 +4,7 @@ import com.kaola.manager.dto.RequestData;
 import com.kaola.manager.dto.ResponseData;
 import com.kaola.manager.service.SitManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author linxu
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/admin/sit")
+@CrossOrigin(origins = {"*"})
 public class SitManagerController {
     @Autowired
     private SitManagerService sitManagerService;

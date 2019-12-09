@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/admin/room")
+@CrossOrigin(origins = {"*"})
 public class RoomManagerController {
     @Autowired
     private RoomManagerSerive roomManagerSerive;

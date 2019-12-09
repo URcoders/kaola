@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/admin/meal")
+@CrossOrigin(origins = {"*"})
 public class MealManagerController {
     @Autowired
     private MealManagerService mealManagerService;

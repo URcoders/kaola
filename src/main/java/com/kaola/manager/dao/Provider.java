@@ -27,11 +27,11 @@ public class Provider {
         return stringBuilder.toString();
     }
 
-    public String selectAllRefound(@Param("date") String date) {
+    public String selectAllRefound(@Param("fdate") String date) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SELECT *FROM refund");
         if (date != null && !date.equals("")) {
-            stringBuilder.append("WHERE refund_date  LIKE  #{date} \"%\"");
+            stringBuilder.append(" WHERE refund_date  LIKE  #{fdate} \"%\"");
         }
         return stringBuilder.toString();
     }

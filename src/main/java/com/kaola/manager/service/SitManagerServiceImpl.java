@@ -57,23 +57,26 @@ public class SitManagerServiceImpl implements SitManagerService {
             //校验是否存在
             Sit existSit = sitMapper.exist(requestData.getSitId(), requestData.getRoomId(), requestData.getStoreId(), requestData.getRoomType());
             if (existSit != null) {
-                responseData.setStatus(Status.OK.getStatus());
+                responseData.setStatus(Status.FAIL.getStatus());
                 responseData.setMsg("该门店的这个房间中已经存在这个座位，请不要重复添加!");
                 return responseData;
             }
             //正常处理
             for (int i = 0; i < Sit.SIT_DATE_TABLE.size(); i++) {
-                Sit sit = new Sit();
-                sit.setMoney(requestData.getMoney());
-                sit.setRoomId(requestData.getRoomId());
-                sit.setSitDate(Sit.SIT_DATE_TABLE.get(i));
-                sit.setRoomType(requestData.getRoomType());
-                //TODO 日期还需要一个外循环 从今天到三年后
-                sit.setCurDate(DateUtil.getY_M_D());
-                sit.setPreserved(0);
-                sit.setStoreId(requestData.getStoreId());
-                sit.setSitId(requestData.getSitId());
-                sitMapper.addSit(sit);
+                for (String date : DateUtil.getY_M_DList()
+                        ) {
+                    Sit sit = new Sit();
+                    sit.setMoney(requestData.getMoney());
+                    sit.setRoomId(requestData.getRoomId());
+                    sit.setSitDate(Sit.SIT_DATE_TABLE.get(i));
+                    sit.setRoomType(requestData.getRoomType());
+                    //TODO 一年改为3年
+                    sit.setCurDate(date);
+                    sit.setPreserved(0);
+                    sit.setStoreId(requestData.getStoreId());
+                    sit.setSitId(requestData.getSitId());
+                    sitMapper.addSit(sit);
+                }
             }
             responseData.setStatus(Status.OK.getStatus());
             responseData.setMsg(Message.OP_OK.getContent());

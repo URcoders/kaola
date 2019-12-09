@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * <tip>take care of yourself.everything is no in vain.</tip>
  */
 @RequestMapping("/admin/refound")
+@CrossOrigin(origins = {"*"})
 @RestController
 public class RefoundManagerController {
     @Autowired

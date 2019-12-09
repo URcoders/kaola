@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/admin/store")
+@CrossOrigin(origins = {"*"})
 public class StoreManageController {
     @Autowired
     private StoreManagerService storeManagerService;

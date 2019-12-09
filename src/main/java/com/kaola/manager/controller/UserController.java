@@ -19,6 +19,7 @@ import java.util.List;
  * <tip>take care of yourself.everything is no in vain.</tip>
  */
 @RequestMapping("/admin/user")
+@CrossOrigin(origins = {"*"})
 @RestController
 public class UserController {
     @Autowired
