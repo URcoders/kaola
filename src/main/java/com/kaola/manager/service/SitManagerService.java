@@ -13,6 +13,8 @@ public interface SitManagerService {
 
     ResponseData addSitBySpecifyRoom(RequestData requestData);
 
+    ResponseData addBatchSitBySpecifyRoom(RequestData requestData);
+
     ResponseData deleteSitBySpecifyRoom(RequestData requestData);
 
     ResponseData modifySitBySpecifyRoom(RequestData requestData);

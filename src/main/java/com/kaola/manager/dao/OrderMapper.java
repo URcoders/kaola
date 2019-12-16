@@ -29,7 +29,8 @@ public interface OrderMapper {
                     @Result(property = "storeName", column = "store_name"),
                     @Result(property = "name", column = "name"),
                     @Result(property = "tel", column = "tel"),
-                    @Result(property = "preservationId",column = "preservation_id")
+                    @Result(property = "preservationId",column = "preservation_id"),
+                    @Result(property = "discount",column = "discount")
             })
     @SelectProvider(value = Provider.class, method = "selectOrder")
     List<Order> queryOrderByType(@Param("orderType") String orderType, @Param("orderDate") String orderDate);
@@ -49,7 +50,9 @@ public interface OrderMapper {
                     @Result(property = "storeName", column = "store_name"),
                     @Result(property = "name", column = "name"),
                     @Result(property = "tel", column = "tel"),
-                    @Result(property = "preservationId",column = "preservation_id")
+                    @Result(property = "preservationId",column = "preservation_id"),
+                    @Result(property = "mealId",column = "meal_id"),
+                    @Result(property = "discount",column = "discount")
             })
     Order queryOrderByOrderId(@Param("id") int id);
     @Update("UPDATE orders SET order_status=#{or.orderStatus} WHERE order_id=#{or.orderId}")

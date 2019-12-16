@@ -17,9 +17,19 @@ public class UtilTest {
     @Test
     public void testDate(){
         //System.out.println(DateUtil.getY_M_D());
-        for (String d:DateUtil.getY_M_DList()
+       /* for (String d:DateUtil.getY_M_DList()
              ) {
             System.out.println(d);
+        }*/
+       int start=1;
+       int end=7;
+       int[] ss=new int[end-start+1];
+        for (int i = 0; i <ss.length ; i++) {
+            ss[i]=start+i;
+        }
+        for (int i:ss
+             ) {
+            System.err.println(i);
         }
     }
 }

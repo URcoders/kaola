@@ -52,7 +52,7 @@ public class StoreManagerServiceImpl implements StoreManagerService {
 
 
     @Override
-    public ResponseData createStore(String tokens, String storeName, String storeAddress) {
+    public ResponseData createStore(String tokens, String storeName, String storeAddress,String UID,String tel,String time) {
         ResponseData<List<Store>> responseData = new ResponseData<>();
         if (VerifyUtil.haveRight(tokens)) {
             try {
@@ -60,7 +60,10 @@ public class StoreManagerServiceImpl implements StoreManagerService {
                 Store store = new Store();
                 store.setStoreAddress(storeAddress);
                 store.setStoreName(storeName);
-                store.setStoreStatus(StoreStatus.STOP.getStatus());
+                store.setUid(UID);
+                store.setTel(tel);
+                store.setStoreTime(time);
+                store.setStoreStatus(StoreStatus.RUNNING.getStatus());
                 //持久化
                 storeMapper.addStore(store);
                 responseData.setMsg(OP_OK.getContent());

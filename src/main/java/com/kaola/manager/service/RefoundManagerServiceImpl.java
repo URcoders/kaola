@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -50,6 +51,8 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
         if (VerifyUtil.haveRight(tokens)) {
             try {
                 responseData.setData(refoundMapper.queryAllRefound(date));
+                //reverse
+                Collections.reverse(responseData.getData());
                 responseData.setStatus(Status.OK.getStatus());
                 responseData.setMsg(Message.OP_OK.getContent());
             } catch (Exception e) {
@@ -115,7 +118,7 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
                         //必须由bean去调用
                         refoundManagerService.processTopup(order.getUserId(), order.getOrderMoney(), order);
                         //更改退款状态
-                        refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(),rid);
+                        refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(), rid);
                         responseData.setStatus(Status.OK.getStatus());
                         responseData.setMsg(Message.OP_OK.getContent());
                     } catch (Exception e) {
@@ -127,7 +130,7 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
                     //处理套餐购买订单
                     try {
                         refoundManagerService.processMeal(order); //更改退款状态
-                        refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(),rid);
+                        refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(), rid);
                         responseData.setStatus(Status.OK.getStatus());
                         responseData.setMsg(Message.OP_OK.getContent());
                     } catch (Exception e) {
@@ -141,7 +144,7 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
                     try {
                         refoundManagerService.processPreservation(order);
                         //更改退款状态
-                        refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(),rid);
+                        refoundMapper.updateRefound(Refound.Status.ACCEPTED.accept(), rid);
                         //TODO 删除预约记录
                         preservationMapper.deletePreservationRecord(order.getPreservationId());
                         responseData.setStatus(Status.OK.getStatus());
@@ -170,10 +173,10 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
         if (user != null) {
             Double rareMoney = user.getRareMoney();
             //执行余额更新
-            if (rareMoney - topUpMoney >= 0.001d) {
+            if (rareMoney - topUpMoney >= 0.000000d) {
                 user.setRareMoney(rareMoney - topUpMoney);
                 userMapper.updateUserInfo(user);
-            }else {
+            } else {
                 throw new Exception("余额不足回扣.");
             }
             //TODO 订单状态修改
@@ -188,6 +191,14 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
     @Transactional(propagation = Propagation.REQUIRED)
     public void processMeal(Order order) throws Exception {
         try {
+            //如果是采用余额购买套餐
+            if (order.getDiscount()=="余额"||"余额".equals(order.getDiscount())){
+                //退还余额
+                User user = userMapper.queryUserById(order.getUserId());
+                user.setRareMoney(user.getRareMoney()+order.getOrderMoney());
+                userMapper.updateUserInfo(user);
+                log.warn("向用户{}退还购买套餐余额：{}",user.getUserId(),order.getOrderMoney());
+            }
             //删除套餐记录
             userAndMealMapper.deleteUserAndMeal(order.getOrderId());
             //TODO 订单状态修改
@@ -195,7 +206,7 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
             orderMapper.updateOrderStatus(order);
         } catch (Exception e) {
             e.printStackTrace();
-            throw  new Exception("处理套餐信息出现异常.");
+            throw new Exception("处理套餐信息出现异常.");
         }
     }
 
@@ -207,7 +218,25 @@ public class RefoundManagerServiceImpl implements RefoundManagerService {
         try {
             //查询预约记录
             Preservation preservation = preservationMapper.queryPreservationById(order.getPreservationId());
-            sitMapper.updateSitStatus(preservation.getSitId(), preservation.getRoomId(), order.getStoreId(), preservation.getPreservationDate().split(" ")[1], preservation.getPreservationDate().split(" ")[0]);
+            String preservationDate = preservation.getPreservationDate();
+            String date = preservationDate.split(" ")[0];
+            String[] times = preservationDate.split(" ")[1].split(",");
+            for (String time : times) {
+                sitMapper.updateSitStatus(preservation.getSitId(), preservation.getRoomId(), order.getStoreId(), time, date);
+            }
+            //如果是套餐消费的预约订单
+            if (order.getMealId() != null) {
+                //退还次数
+                userAndMealMapper.backMealPreservationTimes(times.length, order.getMealId(), order.getUserId());
+            }
+            //如果是采用余额进行预约
+            if (order.getDiscount()=="余额"||"余额".equals(order.getDiscount())){
+                //退还余额
+                User user = userMapper.queryUserById(order.getUserId());
+                user.setRareMoney(user.getRareMoney()+order.getOrderMoney());
+                userMapper.updateUserInfo(user);
+                log.warn("向用户{}退还预约余额：{}",user.getUserId(),order.getOrderMoney());
+            }
             //修改订单状态
             //TODO 订单状态修改
             order.setOrderStatus("同意退款");

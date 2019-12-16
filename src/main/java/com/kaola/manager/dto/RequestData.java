@@ -9,6 +9,9 @@ import lombok.Data;
  */
 @Data
 public class RequestData {
+
+    private String username;
+    private String psw;
     /**
      * 基础业务
      */
@@ -19,6 +22,7 @@ public class RequestData {
      */
     private String storeName;
     private String storeAddress;
+    private String uid;
     /**********
      *room业务
      */
@@ -30,6 +34,9 @@ public class RequestData {
      */
     private int sitId;
     private Double money;
+
+    private int sitStartId;
+    private int sitEndId;
     /**
      * user业务
      */
@@ -39,6 +46,7 @@ public class RequestData {
     private Double rareMoney;
     private int userId;
     private int score;
+    private String realName;
     /**
      * 订单业务
      */
@@ -58,11 +66,15 @@ public class RequestData {
     private String mealDesc;
     private int mealDays;
     private String mealName;
+    private int usedTime;
     /**
      * 退款
      */
     private int reId;
     private String status;
+    //fix
+    private String storeTime;
+
 
 
 }

@@ -18,4 +18,13 @@ public interface AdminService {
      * 管理员注销
      */
     ResponseData logout(String token);
+
+/*
+    ResponseData addAdmin(Administractor administractor);
+
+    ResponseData deleteAdmin(Administractor administractor);
+
+    ResponseData modifyAdmin(Administractor administractor);
+
+    ResponseData modifyAdmin();*/
 }

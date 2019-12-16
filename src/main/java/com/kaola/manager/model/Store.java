@@ -13,4 +13,10 @@ public class Store {
     private int storeId;
     private String storeAddress;
     private int storeStatus;
+    //fix lock UID
+    private String uid;
+    //fix
+    private String tel;
+    private String storeTime;
+
 }

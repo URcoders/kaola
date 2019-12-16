@@ -54,4 +54,21 @@ public interface PreservationMapper {
             }
     )
     Preservation queryPreservationById(@Param("id") int id);
+
+
+    @Select("SELECT * FROM preservation WHERE user_id=#{uid}")
+    @Results(
+            value = {
+                    @Result(property = "sitId", column = "sit_id"),
+                    @Result(property = "roomId", column = "room_id"),
+                    @Result(property = "roomType", column = "room_type"),
+                    @Result(property = "tel", column = "tel"),
+                    @Result(property = "name", column = "name"),
+                    @Result(property = "storeName", column = "store_name"),
+                    @Result(property = "preservationId", column = "preservation_id"),
+                    @Result(property = "preservationDate", column = "preservation_date")
+
+            }
+    )
+    List<Preservation> queryPreservationByUserId(@Param("uid") int uid);
 }

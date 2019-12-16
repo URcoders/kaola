@@ -57,6 +57,15 @@ public interface SitMapper {
 
     @Insert("INSERT INTO sits (sit_id,room_id,store_id,sit_date,money,preserved,room_type,cur_date) VALUES(#{s.sitId},#{s.roomId},#{s.storeId},#{s.sitDate},#{s.money},#{s.preserved},#{s.roomType},#{s.curDate})")
     void addSit(@Param("s") Sit sit);
+    @Insert({
+            "<script>",
+            "insert into  sits(sit_id,room_id,store_id,sit_date,money,preserved,room_type,cur_date) values ",
+            "<foreach collection='sitLists' item='s'  separator=','>",
+            "(#{s.sitId},#{s.roomId},#{s.storeId},#{s.sitDate},#{s.money},#{s.preserved},#{s.roomType},#{s.curDate})",
+            "</foreach>",
+            "</script>"
+    })
+    void insertCollectList(@Param(value="sitLists") List<Sit> testLists);
 
     @Update("UPDATE sits SET preserved = 0 WHERE room_id=#{roomId} AND sit_id=#{sitId} AND store_id=#{storeId} AND sit_date=#{sitDate} AND cur_date=#{curDate}")
     void updateSitStatus(@Param("sitId") int sitId, @Param("roomId") String roomId, @Param("storeId") int storeId, @Param("sitDate") String sitDate, @Param("curDate") String curDate);

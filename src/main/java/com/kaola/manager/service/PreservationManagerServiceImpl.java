@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,6 +30,8 @@ public class PreservationManagerServiceImpl implements PreservationManagerServic
         if (VerifyUtil.haveRight(tokens)) {
             try {
                 responseData.setData(preservationMapper.queryPreservationRecords(date));
+                //reverse
+                Collections.reverse(responseData.getData());
                 responseData.setStatus(Status.OK.getStatus());
                 responseData.setMsg(Message.OP_OK.getContent());
             } catch (Exception e) {
@@ -51,6 +54,28 @@ public class PreservationManagerServiceImpl implements PreservationManagerServic
         if (VerifyUtil.haveRight(tokens)) {
             try {
                preservationMapper.deletePreservationRecord(pid);
+                responseData.setStatus(Status.OK.getStatus());
+                responseData.setMsg(Message.OP_OK.getContent());
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error("删除预约记录出现异常！");
+                responseData.setMsg("删除预约记录出现异常！");
+                responseData.setStatus(Status.SERVER_ERROR.getStatus());
+            }
+        } else {
+            //莫得权限
+            responseData.setStatus(Status.FAIL.getStatus());
+            responseData.setMsg(Message.HAVE_NO_RIGHT.getContent());
+        }
+        return responseData;
+    }
+
+    @Override
+    public ResponseData listPreservationRecordsByUid(String tokens, int uid) {
+        ResponseData responseData = new ResponseData();
+        if (VerifyUtil.haveRight(tokens)) {
+            try {
+                responseData.setData(preservationMapper.queryPreservationByUserId(uid));
                 responseData.setStatus(Status.OK.getStatus());
                 responseData.setMsg(Message.OP_OK.getContent());
             } catch (Exception e) {

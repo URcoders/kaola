@@ -1,6 +1,7 @@
 package com.kaola.manager.service;
 
 
+import com.kaola.manager.config.BackGroundPoolConfiguration;
 import com.kaola.manager.constances.Message;
 import com.kaola.manager.constances.Status;
 import com.kaola.manager.dao.SitMapper;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +27,9 @@ import java.util.List;
 public class SitManagerServiceImpl implements SitManagerService {
     @Autowired
     private SitMapper sitMapper;
+
+    @Autowired
+    private BackGroundPoolConfiguration backGroundPoolConfiguration;
 
     @Override
     public ResponseData listSitsBySpecifyRoom(RequestData requestData) {
@@ -61,23 +66,89 @@ public class SitManagerServiceImpl implements SitManagerService {
                 responseData.setMsg("该门店的这个房间中已经存在这个座位，请不要重复添加!");
                 return responseData;
             }
-            //正常处理
-            for (int i = 0; i < Sit.SIT_DATE_TABLE.size(); i++) {
-                for (String date : DateUtil.getY_M_DList()
-                        ) {
-                    Sit sit = new Sit();
-                    sit.setMoney(requestData.getMoney());
-                    sit.setRoomId(requestData.getRoomId());
-                    sit.setSitDate(Sit.SIT_DATE_TABLE.get(i));
-                    sit.setRoomType(requestData.getRoomType());
-                    //TODO 一年改为3年
-                    sit.setCurDate(date);
-                    sit.setPreserved(0);
-                    sit.setStoreId(requestData.getStoreId());
-                    sit.setSitId(requestData.getSitId());
-                    sitMapper.addSit(sit);
+            Runnable runnable = () -> {
+                //正常处理
+                for (int i = 0; i < Sit.SIT_DATE_TABLE.size(); i++) {
+                    for (String date : DateUtil.getY_M_DList()
+                            ) {
+                        Sit sit = new Sit();
+                        sit.setMoney(requestData.getMoney());
+                        sit.setRoomId(requestData.getRoomId());
+                        sit.setSitDate(Sit.SIT_DATE_TABLE.get(i));
+                        sit.setRoomType(requestData.getRoomType());
+                        sit.setCurDate(date);
+                        sit.setPreserved(0);
+                        sit.setStoreId(requestData.getStoreId());
+                        sit.setSitId(requestData.getSitId());
+                        sitMapper.addSit(sit);
+                    }
+                }
+            };
+            //commit the async task.
+            backGroundPoolConfiguration.runTask(runnable);
+            responseData.setStatus(Status.OK.getStatus());
+            responseData.setMsg(Message.OP_OK.getContent());
+        } else {
+            //莫得权限
+            responseData.setStatus(Status.FAIL.getStatus());
+            responseData.setMsg(Message.HAVE_NO_RIGHT.getContent());
+        }
+        return responseData;
+    }
+
+    @Override
+    public ResponseData addBatchSitBySpecifyRoom(RequestData requestData) {
+        ResponseData responseData = new ResponseData();
+        if (VerifyUtil.haveRight(requestData.getTokens())) {
+            //校验是否存在
+            int startId = requestData.getSitStartId();
+            int endId = requestData.getSitEndId();
+            int[] sitsId = new int[endId - startId + 1];
+            //init sit ID
+            for (int i = 0; i < sitsId.length; i++) {
+                sitsId[i] = startId + i;
+            }
+            //check exists;
+            for (int i = 0; i <sitsId.length ; i++) {
+                Sit existSit = sitMapper.exist(sitsId[i], requestData.getRoomId(), requestData.getStoreId(), requestData.getRoomType());
+                if (existSit!=null){
+                    responseData.setStatus(Status.FAIL.getStatus());
+                    responseData.setMsg("该门店下存在重复的座位了，请查看批量添加的起始座位号与结束座位号！");
+                    return responseData;
                 }
             }
+            //构造座位列表
+            List<Sit> sitList=new ArrayList<>();
+            for (int i = 0; i <sitsId.length ; i++) {
+                for (int j = 0; j < Sit.SIT_DATE_TABLE.size(); j++) {
+                    for (String date : DateUtil.getY_M_DList()
+                            ) {
+                        Sit sit = new Sit();
+                        sit.setMoney(requestData.getMoney());
+                        sit.setRoomId(requestData.getRoomId());
+                        sit.setSitDate(Sit.SIT_DATE_TABLE.get(j));
+                        sit.setRoomType(requestData.getRoomType());
+                        sit.setCurDate(date);
+                        sit.setPreserved(0);
+                        sit.setStoreId(requestData.getStoreId());
+                        sit.setSitId(sitsId[i]);
+                        sitList.add(sit);
+                    }
+                }
+            }
+
+            //正式添加
+            Runnable runnable = () -> {
+                //正常处理
+          /*  int number=  */  /*sitMapper.insertCollectList(sitList);*/
+                for (Sit s:sitList
+                     ) {
+                    sitMapper.addSit(s);
+                }
+            //log.info("添加了一共{}条座位数据。",number);
+            };
+            //commit the async task.
+            backGroundPoolConfiguration.runTask(runnable);
             responseData.setStatus(Status.OK.getStatus());
             responseData.setMsg(Message.OP_OK.getContent());
         } else {

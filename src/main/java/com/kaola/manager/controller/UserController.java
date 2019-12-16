@@ -11,6 +11,7 @@ import com.kaola.manager.util.VerifyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -72,6 +73,8 @@ public class UserController {
         if (VerifyUtil.haveRight(tokens)){
             try {
                 responseData.setData(mapper.queryRecordByUserId(userId));
+                //reverse
+                Collections.reverse(responseData.getData());
                 responseData.setMsg(Message.OP_OK.getContent());
                 responseData.setStatus(Status.OK.getStatus());
             } catch (Exception e) {

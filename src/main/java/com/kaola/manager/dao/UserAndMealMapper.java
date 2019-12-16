@@ -26,4 +26,13 @@ public interface UserAndMealMapper {
 
     @Delete("DELETE FROM user_meal WHERE order_id=#{orderId}")
     void deleteUserAndMeal(@Param("orderId") int orderId);
+
+    /**
+     * 退还套餐购买预约的次数
+     * @param times
+     * @param mealId
+     * @param userId
+     */
+    @Update("UPDATE user_meal SET used_times=(used_times+#{times}) WHERE meal_id=#{mealId} AND user_id=#{userId} ")
+    void backMealPreservationTimes(@Param("times") int times, @Param("mealId") int mealId, @Param("userId") int userId);
 }

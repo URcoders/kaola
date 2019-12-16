@@ -28,4 +28,9 @@ public class PreservationController {
         return preservationManagerService.deletePreservationRecords(tokens, pid);
     }
 
+    @GetMapping("/queryPreservationByUserId")
+    public ResponseData listUserRecord(@RequestParam("tokens") String tokens, @RequestParam("userId") int uid) {
+        return preservationManagerService.listPreservationRecordsByUid(tokens, uid);
+    }
+
 }

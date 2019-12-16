@@ -15,4 +15,7 @@ public class Meal {
     private String mealDesc;
     private int mealDays;
     private String mealName;
+
+    //fix the bug lacking of usedTime
+    private int usedTime;
 }

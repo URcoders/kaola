@@ -22,6 +22,7 @@ public class WrapperFactory {
         user.setTel(requestData.getTel());
         user.setSex(requestData.getSex());
         user.setUserId(requestData.getUserId());
+        user.setRealName(requestData.getRealName());
         return user;
     }
 
@@ -33,6 +34,7 @@ public class WrapperFactory {
         meal.setMealName(requestData.getMealName());
         meal.setMealType(requestData.getMealType());
         meal.setMealMoney(requestData.getMealMoney());
+        meal.setUsedTime(requestData.getUsedTime());
         return meal;
     }
 }

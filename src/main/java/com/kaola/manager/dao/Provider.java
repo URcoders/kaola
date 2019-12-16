@@ -19,7 +19,7 @@ public class Provider {
 
     public String selectPreservation(@Param("preservationTime") String date) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("SELECT preservation_id,room_id,sit_id,room_type,preservation_date,name,tel,store_name ");
+        stringBuilder.append("SELECT preservation_id,room_id,sit_id,room_type,preservation_date,name,p1.tel,store_name ");
         stringBuilder.append("FROM ((SELECT p.*,u.name,u.tel FROM preservation AS p  JOIN user AS u ON p.user_id=u.user_id) AS p1  JOIN store ON p1.store_id=store.store_id)");
         if (date != null && !date.trim().equals("")) {
             stringBuilder.append("WHERE preservation_date LIKE #{preservationTime} \"%\"");

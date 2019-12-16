@@ -9,6 +9,7 @@ import com.kaola.manager.dto.ResponseData;
  */
 public interface PreservationManagerService {
     ResponseData listPreservationRecords(String tokens, String date);
+    ResponseData listPreservationRecordsByUid(String tokens, int uid);
 
     ResponseData deletePreservationRecords(String tokens,int pid);
 }

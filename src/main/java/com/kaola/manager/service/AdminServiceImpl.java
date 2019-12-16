@@ -49,7 +49,7 @@ public class AdminServiceImpl implements AdminService {
                 } else {
                     responseData.setStatus(OK.getStatus());
                     responseData.setMsg(LOGIN_OK.getContent());
-                    responseData.setData(doLogin(retAdmin.getUsername()));
+                    responseData.setData(doLogin(retAdmin.getUsername(),retAdmin.getPrivo()+"")+" "+retAdmin.getPrivo());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -65,9 +65,9 @@ public class AdminServiceImpl implements AdminService {
     /**
      * 将口令写入共享内存区，在分布式版本，这个共享内存区可交由REDIS代替
      */
-    private String doLogin(String username) {
+    private String doLogin(String username,String privo) {
         String token = TokenUtil.createToken(username);
-        SharableMemory.TOKENS_N_EXPIRE.put(token, DateUtil.currentTime() + TokenUtil.TIMEOUT);
+        SharableMemory.TOKENS_N_EXPIRE.put(token+" "+privo, DateUtil.currentTime() + TokenUtil.TIMEOUT);
         return token;
     }
 
@@ -80,4 +80,25 @@ public class AdminServiceImpl implements AdminService {
         log.warn("管理员口令:{}已经注销.", token);
         return responseData;
     }
+
+
+ /*   @Override
+    public ResponseData addAdmin(Administractor administractor) {
+        return null;
+    }
+
+    @Override
+    public ResponseData deleteAdmin(Administractor administractor) {
+        return null;
+    }
+
+    @Override
+    public ResponseData modifyAdmin(Administractor administractor) {
+        return null;
+    }
+
+    @Override
+    public ResponseData modifyAdmin() {
+        return null;
+    }*/
 }

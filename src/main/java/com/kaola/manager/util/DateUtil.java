@@ -1,5 +1,6 @@
 package com.kaola.manager.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -17,6 +18,20 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_DATE_PATTERN);
         return sdf.format(System.currentTimeMillis());
     }
+    public static int timeCompare(String t1,String t2){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar c1=Calendar.getInstance();
+        Calendar c2=Calendar.getInstance();
+        try {
+            c1.setTime(formatter.parse(t1));
+            c2.setTime(formatter.parse(t2));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int result=c1.compareTo(c2);
+        return result;
+    }
+
 
     public static String getY_M_D() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE);
@@ -30,12 +45,13 @@ public class DateUtil {
 
     public static List<String> getY_M_DList() {
         List<String> dates = new LinkedList<>();
-        for (int i = 0; i < 3; i++) {
-            Date date=new Date();
-            Calendar calendar=new GregorianCalendar();
+        //TODO
+        for (int i = 0; i < 30; i++) {
+            Date date = new Date();
+            Calendar calendar = new GregorianCalendar();
             calendar.setTime(date);
-            calendar.add(Calendar.DATE,i);
-            date=calendar.getTime();
+            calendar.add(Calendar.DATE, i);
+            date = calendar.getTime();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE);
             dates.add(simpleDateFormat.format(date));
         }
@@ -46,13 +62,13 @@ public class DateUtil {
         return System.currentTimeMillis();
     }
 
-  /*  public static void main(String[] args) {
+    public static void main(String[] args) {
 
         System.err.println(DateUtil.getY_M_D(System.currentTimeMillis() + ONE_DAY_MILLIONS));
         for (String d : DateUtil.getY_M_DList()
-                ) {
+        ) {
             System.out.println(d);
         }
-    }*/
+    }
 
 }

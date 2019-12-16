@@ -20,4 +20,7 @@ public class User {
     private String birth;
     private String target;
     private String job;
+
+    //fix realName
+    private String realName;
 }

@@ -11,4 +11,8 @@ import lombok.Data;
 public class Administractor {
     private String username;
     private String psw;
+    // 1为超级管理  0为普通管理
+    private int privo;
+    private String realName;
+    private String tel;
 }

@@ -21,14 +21,14 @@ public class Sit {
 
     //初始化段表
     static {
-        SIT_DATE_TABLE.add("00:00-01:00");
+        /*SIT_DATE_TABLE.add("00:00-01:00");
         SIT_DATE_TABLE.add("01:00-02:00");
         SIT_DATE_TABLE.add("02:00-03:00");
         SIT_DATE_TABLE.add("03:00-04:00");
         SIT_DATE_TABLE.add("04:00-05:00");
         SIT_DATE_TABLE.add("05:00-06:00");
         SIT_DATE_TABLE.add("06:00-07:00");
-        SIT_DATE_TABLE.add("07:00-08:00");
+        SIT_DATE_TABLE.add("07:00-08:00");*/
         SIT_DATE_TABLE.add("08:00-09:00");
         SIT_DATE_TABLE.add("09:00-10:00");
         SIT_DATE_TABLE.add("10:00-11:00");
@@ -43,7 +43,7 @@ public class Sit {
         SIT_DATE_TABLE.add("20:00-21:00");
         SIT_DATE_TABLE.add("21:00-22:00");
         SIT_DATE_TABLE.add("22:00-23:00");
-        SIT_DATE_TABLE.add("23:00-24:00");
+        /*SIT_DATE_TABLE.add("23:00-24:00");*/
     }
 
     /**

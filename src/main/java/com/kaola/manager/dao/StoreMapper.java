@@ -22,7 +22,10 @@ public interface StoreMapper {
             @Result(property = "storeId", column = "store_id"),
             @Result(property = "storeName", column = "store_name"),
             @Result(property = "storeAddress", column = "store_address"),
-            @Result(property = "storeStatus", column = "store_status")
+            @Result(property = "storeStatus", column = "store_status"),
+            @Result(property = "uid",column = "UID"),
+            @Result(property = "tel",column = "tel"),
+            @Result(property = "storeTime",column = "store_time")
     })
     List<Store> queryAllStore();
 
@@ -39,7 +42,7 @@ public interface StoreMapper {
      *
      * @param store 新的门店
      */
-    @Insert("INSERT INTO store (store_name,store_status,store_address) VALUES(#{store.storeName},#{store.storeStatus},#{store.storeAddress})")
+    @Insert("INSERT INTO store (store_name,store_status,store_address,UID,store_time,tel) VALUES(#{store.storeName},#{store.storeStatus},#{store.storeAddress},#{store.uid},#{store.storeTime},#{store.tel})")
     void addStore(@Param("store") Store store);
 
     /**
@@ -47,7 +50,7 @@ public interface StoreMapper {
      *
      * @param store 新的门店信息
      */
-    @Update("UPDATE store SET store_name=#{s.storeName},store_address=#{s.storeAddress},store_status=#{s.storeStatus} WHERE store_id=#{s.storeId}")
+    @Update("UPDATE store SET store_name=#{s.storeName},store_address=#{s.storeAddress},store_status=#{s.storeStatus},UID=#{s.uid},store_time=#{s.storeTime},tel=#{s.tel} WHERE store_id=#{s.storeId}")
     void modifyStore(@Param("s") Store store);
 
     @Select("SELECT * FROM store WHERE store_id=#{sid}")
@@ -56,7 +59,10 @@ public interface StoreMapper {
                     @Result(property = "storeId", column = "store_id"),
                     @Result(property = "storeName", column = "store_name"),
                     @Result(property = "storeAddress", column = "store_address"),
-                    @Result(property = "storeStatus", column = "store_status")
+                    @Result(property = "storeStatus", column = "store_status"),
+                    @Result(property = "uid",column = "UID"),
+                    @Result(property = "tel",column = "tel"),
+                    @Result(property = "storeTime",column = "store_time")
             })
     Store queryStoreById(@Param("sid") int storeId);
 }

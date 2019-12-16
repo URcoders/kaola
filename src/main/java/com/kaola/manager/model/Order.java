@@ -25,6 +25,11 @@ public class Order {
     private String name;
     private String tel;
     private int preservationId;
+    //fix rareMoney to buy meal or preservation
+    private String discount;
+
+    //fix the meal
+    private Integer mealId;
 
     public static enum OrderType {
         /**

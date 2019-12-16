@@ -32,7 +32,7 @@ public class StoreManageController {
 
     @PostMapping("/addStore")
     public ResponseData addStore(@RequestBody RequestData requestData) {
-        return storeManagerService.createStore(requestData.getTokens(), requestData.getStoreName(), requestData.getStoreAddress());
+        return storeManagerService.createStore(requestData.getTokens(), requestData.getStoreName(), requestData.getStoreAddress(),requestData.getUid(),requestData.getTel(),requestData.getStoreTime());
     }
 
     @PostMapping("/modifyStore")

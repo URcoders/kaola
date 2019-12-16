@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,6 +54,8 @@ public class OrderManagerServiceImpl implements OrderManagerService {
         if (VerifyUtil.haveRight(tokens)) {
             try {
                 responseData.setData(orderMapper.queryOrderByType(orderType.trim(),orderDate));
+                //reverse
+                Collections.reverse(responseData.getData());
                 responseData.setMsg(Message.OP_OK.getContent());
                 responseData.setStatus(Status.OK.getStatus());
             } catch (Exception e) {
