@@ -19,6 +19,8 @@ public class Refound {
     private Integer orderId;
     private Integer preservationId;
     private String status;
+    //退款类型
+    private String reType;
 
     public enum Status {
         /**

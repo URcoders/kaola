@@ -71,4 +71,16 @@ public interface PreservationMapper {
             }
     )
     List<Preservation> queryPreservationByUserId(@Param("uid") int uid);
+
+    @Insert({
+            "<script>",
+            "insert into  preservation (room_id,preservation_date,user_id,sit_id,store_id,room_type) values ",
+            "<foreach collection='list' item='s'  separator=','>",
+            "(#{s.roomId},#{s.preservationDate},#{s.userId},#{s.sitId},#{s.storeId},#{s.roomType})",
+            "</foreach>",
+            "</script>"
+    })
+    int addPreservation(@Param("list") List<Preservation> preservations);
+
+
 }

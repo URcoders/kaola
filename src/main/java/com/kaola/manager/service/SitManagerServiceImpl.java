@@ -66,11 +66,12 @@ public class SitManagerServiceImpl implements SitManagerService {
                 responseData.setMsg("该门店的这个房间中已经存在这个座位，请不要重复添加!");
                 return responseData;
             }
+            List<Sit> sitList=new ArrayList<>();
             Runnable runnable = () -> {
                 //正常处理
                 for (int i = 0; i < Sit.SIT_DATE_TABLE.size(); i++) {
                     for (String date : DateUtil.getY_M_DList()
-                            ) {
+                    ) {
                         Sit sit = new Sit();
                         sit.setMoney(requestData.getMoney());
                         sit.setRoomId(requestData.getRoomId());
@@ -80,9 +81,11 @@ public class SitManagerServiceImpl implements SitManagerService {
                         sit.setPreserved(0);
                         sit.setStoreId(requestData.getStoreId());
                         sit.setSitId(requestData.getSitId());
-                        sitMapper.addSit(sit);
+                        //sitMapper.addSit(sit);
+                        sitList.add(sit);
                     }
                 }
+                sitMapper.insertCollectList(sitList);
             };
             //commit the async task.
             backGroundPoolConfiguration.runTask(runnable);
@@ -109,20 +112,20 @@ public class SitManagerServiceImpl implements SitManagerService {
                 sitsId[i] = startId + i;
             }
             //check exists;
-            for (int i = 0; i <sitsId.length ; i++) {
+            for (int i = 0; i < sitsId.length; i++) {
                 Sit existSit = sitMapper.exist(sitsId[i], requestData.getRoomId(), requestData.getStoreId(), requestData.getRoomType());
-                if (existSit!=null){
+                if (existSit != null) {
                     responseData.setStatus(Status.FAIL.getStatus());
                     responseData.setMsg("该门店下存在重复的座位了，请查看批量添加的起始座位号与结束座位号！");
                     return responseData;
                 }
             }
             //构造座位列表
-            List<Sit> sitList=new ArrayList<>();
-            for (int i = 0; i <sitsId.length ; i++) {
-                for (int j = 0; j < Sit.SIT_DATE_TABLE.size(); j++) {
-                    for (String date : DateUtil.getY_M_DList()
-                            ) {
+            List<Sit> sitList = new ArrayList<>();
+            //异步顺序应该如下
+            for (String date : DateUtil.getY_M_DList()) {
+                for (int i = 0; i < sitsId.length; i++) {
+                    for (int j = 0; j < Sit.SIT_DATE_TABLE.size(); j++) {
                         Sit sit = new Sit();
                         sit.setMoney(requestData.getMoney());
                         sit.setRoomId(requestData.getRoomId());
@@ -140,12 +143,13 @@ public class SitManagerServiceImpl implements SitManagerService {
             //正式添加
             Runnable runnable = () -> {
                 //正常处理
-          /*  int number=  */  /*sitMapper.insertCollectList(sitList);*/
-                for (Sit s:sitList
+                /*  int number=  */
+                sitMapper.insertCollectList(sitList);
+            /*    for (Sit s:sitList
                      ) {
                     sitMapper.addSit(s);
-                }
-            //log.info("添加了一共{}条座位数据。",number);
+                }*/
+                //log.info("添加了一共{}条座位数据。",number);
             };
             //commit the async task.
             backGroundPoolConfiguration.runTask(runnable);

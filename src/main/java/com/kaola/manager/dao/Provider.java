@@ -29,9 +29,9 @@ public class Provider {
 
     public String selectAllRefound(@Param("fdate") String date) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("SELECT *FROM refund");
+        stringBuilder.append("SELECT re_id,refund.user_id,tel,name,refund_date,money,order_type,status,refund.preservation_id FROM (refund LEFT JOIN orders ON refund.order_id=orders.order_id) ");
         if (date != null && !date.equals("")) {
-            stringBuilder.append(" WHERE refund_date  LIKE  #{fdate} \"%\"");
+            stringBuilder.append(" WHERE refund.refund_date LIKE  #{fdate} \"%\"");
         }
         return stringBuilder.toString();
     }

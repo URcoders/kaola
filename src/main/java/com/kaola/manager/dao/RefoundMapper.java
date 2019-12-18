@@ -23,7 +23,8 @@ public interface RefoundMapper {
                     @Result(property = "money", column = "money"),
                     @Result(property = "orderId", column = "order_id"),
                     @Result(property = "preservationId", column = "preservation_id"),
-                    @Result(property = "status", column = "status")
+                    @Result(property = "status", column = "status"),
+                    @Result(property = "reType", column = "order_type")
             }
     )
     List<Refound> queryAllRefound(@Param("fdate") String date);
@@ -46,7 +47,8 @@ public interface RefoundMapper {
                     @Result(property = "money", column = "money"),
                     @Result(property = "orderId", column = "order_id"),
                     @Result(property = "preservationId", column = "preservation_id"),
-                    @Result(property = "status", column = "status")
+                    @Result(property = "status", column = "status"),
+                    @Result(property = "reType", column = "order_type")
             }
     )
     Refound queryRefound(@Param("rid") int rid);

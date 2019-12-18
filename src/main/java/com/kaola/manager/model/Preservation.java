@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class Preservation {
     private int preservationId;
+    private int userId;
     /**
      * store-room-sit信息
      */
@@ -17,6 +18,7 @@ public class Preservation {
     private String roomId;
     private String roomType;
     private String storeName;
+    private int storeId;
     /**
      * preservation-time
      */

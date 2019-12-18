@@ -35,6 +35,10 @@ public class WrapperFactory {
         meal.setMealType(requestData.getMealType());
         meal.setMealMoney(requestData.getMealMoney());
         meal.setUsedTime(requestData.getUsedTime());
+        meal.setDisplayDate(requestData.getDisplayDate());
+        meal.setOnSell(requestData.getOnSell());
+        meal.setRareNumber(requestData.getRareNumber());
+        meal.setShijianduan(requestData.getShijianduan());
         return meal;
     }
 }

@@ -1,5 +1,6 @@
 package com.kaola.manager.service;
 
+import com.kaola.manager.dto.RequestData;
 import com.kaola.manager.dto.ResponseData;
 
 /**
@@ -12,4 +13,6 @@ public interface PreservationManagerService {
     ResponseData listPreservationRecordsByUid(String tokens, int uid);
 
     ResponseData deletePreservationRecords(String tokens,int pid);
+
+    ResponseData addPreservation(RequestData requestData);
 }

@@ -28,6 +28,21 @@ public interface UserMapper {
     })
     List<User> queryAllUserNotInBlackList();
 
+    @Select("SELECT *FROM user WHERE tel=#{tel}")
+    @Results(value = {
+            @Result(property = "userId", column = "user_id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "sex,", column = "sex,"),
+            @Result(property = "tel", column = "tel"),
+            @Result(property = "rareMoney", column = "rare_money"),
+            @Result(property = "score", column = "score"),
+            @Result(property = "birth", column = "birth"),
+            @Result(property = "job", column = "job"),
+            @Result(property = "target", column = "target"),
+            @Result(property = "realName", column = "real_name")
+    })
+    User queryUserByTel(@Param("tel")String tel);
+
     @Insert("INSERT INTO user (user_id,name,sex,tel,rare_money,score,real_name) VALUES (#{user.userId},#{user.name},#{user.sex},#{user.tel},#{user.rareMoney},#{user.score},#{user.realName})")
     void addUser(@Param("user") User user);
 

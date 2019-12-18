@@ -18,4 +18,12 @@ public class Meal {
 
     //fix the bug lacking of usedTime
     private int usedTime;
+    //fix
+    private String displayDate;
+    //是否上架
+    private int onSell;
+    //剩余数量
+    private int rareNumber;
+    //可用时间段
+    private String shijianduan;
 }

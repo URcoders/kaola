@@ -12,6 +12,12 @@ import java.util.List;
  */
 @Mapper
 public interface SitMapper {
+
+    @Delete("DELETE FROM sits WHERE cur_date<#{curDate}")
+    int deleteSits(@Param("curDate")String curDate);
+
+
+
     @Select("SELECT DISTINCT sit_id,room_id,store_id,room_type,money FROM sits WHERE room_id=#{roomId} AND store_id=#{storeId} AND room_type=#{roomType}")
     @Results(value = {
             @Result(property = "sitId", column = "sit_id"),
@@ -57,6 +63,7 @@ public interface SitMapper {
 
     @Insert("INSERT INTO sits (sit_id,room_id,store_id,sit_date,money,preserved,room_type,cur_date) VALUES(#{s.sitId},#{s.roomId},#{s.storeId},#{s.sitDate},#{s.money},#{s.preserved},#{s.roomType},#{s.curDate})")
     void addSit(@Param("s") Sit sit);
+
     @Insert({
             "<script>",
             "insert into  sits(sit_id,room_id,store_id,sit_date,money,preserved,room_type,cur_date) values ",
@@ -65,9 +72,29 @@ public interface SitMapper {
             "</foreach>",
             "</script>"
     })
-    void insertCollectList(@Param(value="sitLists") List<Sit> testLists);
+    void insertCollectList(@Param(value = "sitLists") List<Sit> testLists);
+
+    @Update({"<script>" ,
+            " <foreach collection='sitLists' item='s'  separator=';'>" ,
+            " UPDATE" + "  sits   " ,
+            "   set " ,
+            "preserved=1 " ,
+            "WHERE room_id=#{s.roomId} AND sit_id=#{s.sitId} AND store_id=#{s.storeId} AND sit_date=#{s.sitDate} AND cur_date=#{s.curDate} " ,
+            "</foreach>" ,
+            "</script>"})
+    void updateSits(@Param(value = "sitLists") List<Sit> testLists);
 
     @Update("UPDATE sits SET preserved = 0 WHERE room_id=#{roomId} AND sit_id=#{sitId} AND store_id=#{storeId} AND sit_date=#{sitDate} AND cur_date=#{curDate}")
     void updateSitStatus(@Param("sitId") int sitId, @Param("roomId") String roomId, @Param("storeId") int storeId, @Param("sitDate") String sitDate, @Param("curDate") String curDate);
 
+    @Results(value = {
+            @Result(property = "sitId", column = "sit_id"),
+            @Result(property = "roomId", column = "room_id"),
+            @Result(property = "storeId", column = "store_id"),
+            @Result(property = "roomType", column = "room_type"),
+            @Result(property = "money", column = "money"),
+            @Result(property = "preserved", column = "preserved")
+    })
+    @Select("SELECT * FROM sits WHERE  room_id=#{roomId} AND sit_id=#{sitId} AND store_id=#{storeId} AND sit_date=#{sitDate} AND cur_date=#{curDate}")
+    Sit verifySit(@Param("sitId") int sitId, @Param("roomId") String roomId, @Param("storeId") int storeId, @Param("sitDate") String sitDate, @Param("curDate") String curDate);
 }

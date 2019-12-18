@@ -67,6 +67,14 @@ public class RequestData {
     private int mealDays;
     private String mealName;
     private int usedTime;
+    //上架时间
+    private String displayDate;
+    //是否上架
+    private int onSell;
+    //剩余数量
+    private int rareNumber;
+    //可用时间段
+    private String shijianduan;
     /**
      * 退款
      */
@@ -75,6 +83,9 @@ public class RequestData {
     //fix
     private String storeTime;
 
-
+    //预约模块
+    private String startDate;
+    private String endDate;
+    private String lockTime;
 
 }

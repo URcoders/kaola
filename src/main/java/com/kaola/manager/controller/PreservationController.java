@@ -1,5 +1,6 @@
 package com.kaola.manager.controller;
 
+import com.kaola.manager.dto.RequestData;
 import com.kaola.manager.dto.ResponseData;
 import com.kaola.manager.model.Preservation;
 import com.kaola.manager.service.PreservationManagerService;
@@ -21,6 +22,11 @@ public class PreservationController {
     @GetMapping("/listRecord")
     public ResponseData listRecord(@RequestParam("tokens") String tokens, @RequestParam("date") String date) {
         return preservationManagerService.listPreservationRecords(tokens, date);
+    }
+
+    @PostMapping("/addPreservation")
+    public ResponseData addPreservation(@RequestBody RequestData requestData){
+        return preservationManagerService.addPreservation(requestData);
     }
 
     @PostMapping("/deleteRecord")
