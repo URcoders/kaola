@@ -32,7 +32,7 @@ public interface AdministractorMapper {
             })
     List<Administractor> queryAllAdmin();
 
-    @Update("UPDATE administrator SET username=#{admin.username},psw=#{admin.psw},tel=#{admin.tel},real_name=#{admin.realName};")
+    @Update("UPDATE administrator SET username=#{admin.username},psw=#{admin.psw},tel=#{admin.tel},real_name=#{admin.realName} WHERE username=#{admin.username};")
     void modifyAdmin(@Param("admin") Administractor administractor);
 
     @Delete("DELETE FROM administrator WHERE username=#{admin.username}")

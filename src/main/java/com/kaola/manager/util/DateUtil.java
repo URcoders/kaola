@@ -49,7 +49,7 @@ public class DateUtil {
     public static List<String> getY_M_DList() {
         List<String> dates = new LinkedList<>();
         //TODO
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 365; i++) {
             Date date = new Date();
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(date);

@@ -110,7 +110,7 @@ public class PreservationManagerServiceImpl implements PreservationManagerServic
     @Transactional(rollbackFor = {Exception.class})
     public ResponseData addPreservation(RequestData requestData) {
         ResponseData responseData = new ResponseData();
-        if (!VerifyUtil.haveRight(requestData.getTokens())) {
+        if (VerifyUtil.haveRight(requestData.getTokens())) {
             try {
                 //verify tel
                 User user = userMapper.queryUserByTel(requestData.getTel());

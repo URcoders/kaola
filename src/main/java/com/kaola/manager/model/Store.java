@@ -18,5 +18,7 @@ public class Store {
     //fix
     private String tel;
     private String storeTime;
+    //
+    private String verifyCode;
 
 }

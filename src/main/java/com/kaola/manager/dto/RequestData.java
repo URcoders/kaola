@@ -87,5 +87,9 @@ public class RequestData {
     private String startDate;
     private String endDate;
     private String lockTime;
+    //fix store
+    private String verifyCode;
+
+    private int display;
 
 }

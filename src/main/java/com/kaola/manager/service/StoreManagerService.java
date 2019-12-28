@@ -17,7 +17,7 @@ public interface StoreManagerService {
      */
     ResponseData listStore(String tokens);
 
-    ResponseData createStore(String tokens, String storeName, String storeAddress,String UID,String tel,String time);
+    ResponseData createStore(String tokens, String storeName, String storeAddress,String UID,String tel,String time,String verifyCode);
 
 
     ResponseData deleteStore(String tokens, int id);
